@@ -1,0 +1,61 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/docs/platform/cli + https://laminar.sh/docs/platform/mcp +
+  https://github.com/lmnr-ai/lmnr-skills/blob/main/skills/laminar/references/sql-query-api.md
+docs: https://laminar.sh/docs/platform/cli#authenticate
+note: Laminar publishes no OpenAPI, so this profile is searched from the documentation rather than
+  derived from securitySchemes.
+summary:
+  types:
+  - http
+  - oauth2
+  http_schemes:
+  - bearer
+  oauth2_flows:
+  - deviceCode
+  credential_kinds:
+  - project API key (machine/SDK/MCP/HTTP API)
+  - user session via OAuth device flow (CLI)
+schemes:
+- name: ProjectApiKeyBearer
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  format: 'Bearer <project_api_key>'
+  env_var: LMNR_PROJECT_API_KEY
+  issued_at: Laminar dashboard -> Settings -> Project API Keys
+  minted_by_cli: 'lmnr-cli setup mints a project API key and writes LMNR_PROJECT_API_KEY to .env.local
+    or .env'
+  scope: project-scoped; every request is automatically constrained to the owning project so no tenant
+    filter is required in queries
+  used_by:
+  - POST /v1/sql/query (SQL Query API)
+  - /v1/traces (OTLP trace ingest)
+  - /v1/mcp (MCP server)
+  - '@lmnr-ai/lmnr and lmnr Python SDKs (Laminar.initialize / LaminarClient)'
+  revocation: keys stay visible and revocable in Settings -> Project API Keys
+- name: CliDeviceFlow
+  type: oauth2
+  flow: deviceCode
+  description: 'lmnr-cli authenticates as the signed-in user, not with a project API key. lmnr-cli
+    login starts an OAuth device flow: the CLI prints a verification URL and code and opens the
+    browser for approval.'
+  credential_store: ~/.config/lmnr/credentials.json (precedence $XDG_CONFIG_HOME, %APPDATA%,
+    ~/.config)
+  token_lifetime: short-lived access token, refreshed automatically as it nears expiry
+  revocation: revoked sessions require re-running lmnr-cli login; lmnr-cli logout removes stored
+    credentials
+  self_hosted: login targets the frontend (auth issuer) via LMNR_FRONTEND_URL or --frontend-url
+project_resolution:
+  description: CLI data commands resolve which project they target from the working directory rather
+    than from the credential.
+  order:
+  - --project-id <id> flag
+  - nearest .lmnr/project.json walking up from the current directory
+  link_file: .lmnr/project.json (holds project id and display details, never secrets)
+self_hosting:
+  base_url_env: LMNR_BASE_URL
+  frontend_url_env: LMNR_FRONTEND_URL
+  default_http_port: 8000
+  default_grpc_port: 8001
