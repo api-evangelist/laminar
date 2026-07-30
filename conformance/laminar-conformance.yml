@@ -1,0 +1,76 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/docs (tracing/otel, platform/cli, platform/mcp) + live endpoint probes
+note: 'Laminar publishes no OpenAPI, so every assertion below is grounded in documentation or a live
+  probe rather than derived from a machine-readable spec.'
+standards:
+- id: opentelemetry-otlp
+  conforms: true
+  evidence: 'Laminar is OpenTelemetry-native and serves the standard OTLP trace endpoint at
+    /v1/traces, accepting gRPC, HTTP+protobuf and HTTP+JSON encodings. Any OpenTelemetry-capable
+    runtime can send spans without a Laminar SDK.'
+  docs: https://laminar.sh/docs/tracing/otel
+- id: model-context-protocol
+  conforms: true
+  evidence: 'Official hosted MCP server at https://api.lmnr.ai/v1/mcp over HTTP transport, exposing
+    ask_agent, query_laminar_sql and get_trace_context; documented client configs for Claude Code,
+    Cursor and Codex.'
+  docs: https://laminar.sh/docs/platform/mcp
+- id: oauth2-device-authorization-grant
+  conforms: true
+  evidence: 'lmnr-cli login implements an OAuth 2.0 device flow (RFC 8628) — prints a verification URL
+    and code, stores a short-lived access token refreshed automatically as it nears expiry.'
+  docs: https://laminar.sh/docs/platform/cli#authenticate
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: 'HTTP API, OTLP ingest and MCP server all authenticate with Authorization: Bearer
+    <project_api_key>.'
+- id: agent-skills
+  conforms: true
+  evidence: 'Laminar publishes a first-party agent skill at github.com/lmnr-ai/lmnr-skills, installed
+    into .claude/, .cursor/, .codex/ or .agents/ by lmnr-cli setup.'
+- id: llms-txt
+  conforms: true
+  evidence: 'Publishes https://laminar.sh/docs/llms.txt (and llms-full.txt); every docs page is also
+    served as raw markdown at its .md URL.'
+- id: rfc8414-authorization-server-metadata
+  conforms: false
+  evidence: '/.well-known/oauth-authorization-server returns 404 on every Laminar host despite a
+    documented device flow.'
+- id: openid-connect-discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every Laminar host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'No application/problem+json responses documented; errors are returned as a plain error
+    body and the SDKs raise.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every Laminar host.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset/Deprecation header support or deprecation policy is documented; removals are
+    announced in the dated changelog.
+- id: openapi
+  conforms: false
+  evidence: 'No OpenAPI or Swagger document published; probes of /openapi.json on api.lmnr.ai and
+    laminar.sh returned 404. The HTTP surface is documented in prose and in the published agent skill.'
+- id: asyncapi
+  conforms: false
+  evidence: 'No AsyncAPI document and no outbound webhook surface. Laminar''s event surface is
+    inbound OTLP ingest plus outbound Slack/email alerting from Signals, neither of which is a
+    consumer-subscribable webhook API.'
+compliance_program:
+  published: false
+  note: 'No trust center, compliance page, or named certification (SOC 2, ISO 27001, HIPAA, PCI,
+    FedRAMP) was found on any Laminar host — trust.lmnr.ai and /security do not resolve. Accordingly
+    no Compliance or TrustCenter pointer is emitted. Laminar does publish a project-level PII
+    redaction control and full self-hosting as its data-residency answer.'
+  related:
+  - https://laminar.sh/docs/platform/pii-redaction
+  - https://laminar.sh/docs/self-hosting/overview
+licensing:
+  open_source: true
+  license: Apache-2.0
+  evidence: '@lmnr-ai/lmnr, lmnr-cli and the lmnr platform repo are published under Apache-2.0.'
+  repository: https://github.com/lmnr-ai/lmnr

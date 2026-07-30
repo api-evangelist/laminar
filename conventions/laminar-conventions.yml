@@ -1,0 +1,106 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/docs (SQL query API, OTel, CLI, tracing structure, MCP)
+docs: https://laminar.sh/docs/platform/sql-editor
+scope: 'Cross-cutting request/response semantics for the Laminar HTTP surface (api.lmnr.ai) and the
+  SDK/CLI clients that wrap it.'
+authentication:
+  style: bearer token in the Authorization header (project API key)
+  artifact: authentication/laminar-authentication.yml
+  note: the CLI instead authenticates as the signed-in user via an OAuth device flow
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: all documented endpoints are /v1/* (/v1/sql/query, /v1/traces, /v1/mcp)
+  artifact: lifecycle/laminar-lifecycle.yml
+tenancy:
+  model: project-scoped credential
+  behavior: 'every request is automatically scoped to the project that owns the API key; queries need
+    no tenant filter in the WHERE clause'
+request:
+  content_type: application/json
+  accept: application/json
+  query_envelope:
+    endpoint: POST /v1/sql/query
+    fields:
+    - name: query
+      required: true
+      constraint: SELECT-only ClickHouse SQL
+    - name: parameters
+      required: false
+      note: send {} when unused
+    parameter_syntax: 'typed placeholders of the form {name:Type}, e.g. {trace_id:UUID}'
+response:
+  envelope: '{"data": [ ...row objects... ]}'
+  data_field: data
+  json_columns_are_strings: 'JSON payloads are stored as strings; use ClickHouse simpleJSONExtract*
+    and simpleJSONHas to read them'
+error_handling:
+  style: 'non-2xx responses include an error body; the SDKs raise on non-2xx'
+  format: not RFC 9457 — Laminar does not publish application/problem+json
+  cli_exit_codes:
+    scope: lmnr-cli setup
+    codes:
+      6: login failed
+      7: no project to select
+      8: .env write failed
+      9: key minting failed
+      10: project discovery failed
+idempotency:
+  supported: false
+  note: 'Laminar documents no idempotency-key header or parameter. The primary write path is
+    append-only OTLP span ingest, and the read path is SELECT-only SQL, so there is no documented
+    idempotency contract to record. No Idempotency pointer is emitted for this provider.'
+pagination:
+  supported: false
+  note: 'The SQL Query API has no pagination envelope — callers bound result sets with SQL LIMIT and
+    time filters on start_time. Documentation advises always filtering by time for performance and
+    avoiding joins in favor of multiple queries combined client-side.'
+rate_limiting:
+  documented: false
+  note: 'No rate-limit headers or published quotas were found in the docs. Commercial limits are
+    expressed as plan data volume (GB) and Signals token spend — see plans/laminar-plans.yml.'
+tracing_and_correlation:
+  request_id_header: not documented
+  correlation_model: 'OpenTelemetry trace/span IDs. Laminar.getTraceId() / Laminar.get_trace_id()
+    expose the active trace id so callers can link external records (e.g. evaluation datapoints) to a
+    trace. client.traces.pushMetadata(traceId, metadata) attaches metadata to a trace that has already
+    ended.'
+  structure:
+    trace: one trace = one unit of work analyzed end-to-end (a request, turn, job, or pipeline run)
+    span_types:
+    - LLM
+    - TOOL
+    - DEFAULT
+    - EXECUTOR
+    - EVALUATOR
+    - EVALUATION
+    context_fields:
+    - userId
+    - sessionId
+    - metadata
+    - tags
+  cardinality_rule: 'Never put dynamic IDs (request, user, document ids) in span names or tags — span
+    names and tags stay stable and low-cardinality; identifiers go in metadata or the dedicated
+    userId/sessionId fields.'
+output_conventions:
+  cli: '--json emits machine-readable output on stdout while human-readable progress goes to stderr,
+    so pipes stay clean'
+ingest:
+  endpoint: /v1/traces
+  encodings:
+  - OTLP/gRPC
+  - OTLP/HTTP+protobuf
+  - OTLP/HTTP+JSON
+  grpc_port_cloud: 8443
+  note: standard OpenTelemetry endpoint — no Laminar-specific wire format required
+privacy:
+  pii_redaction: 'project-level toggle (Settings -> Security). When on, every span input and output is
+    run through Laminar''s PII redactor before storage; detected entities are replaced with labelled
+    placeholders. Pro and Enterprise plans, and self-hostable as a gRPC service.'
+cross_links:
+  authentication: authentication/laminar-authentication.yml
+  lifecycle: lifecycle/laminar-lifecycle.yml
+  changelog: changelog/laminar-changelog.yml
+  cli: cli/laminar-cli.yml
+  mcp: mcp/laminar-mcp.yml

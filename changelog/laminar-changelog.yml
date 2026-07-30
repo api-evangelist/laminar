@@ -1,0 +1,88 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/docs/changelog
+url: https://laminar.sh/docs/changelog
+scheme: dated
+cadence: monthly (dated month headings; earlier entries carry explicit dates)
+current_version:
+  api: v1
+  typescript_sdk: 0.8.38
+  python_sdk: 0.7.56
+  cli: 0.3.2
+window: 'recent entries only — the live changelog at the source URL is authoritative'
+entries:
+- date: '2026-07'
+  breaking: false
+  highlights:
+  - 'Claude Code and Codex plugins: trace Claude Code and OpenAI Codex CLI sessions with
+    npx lmnr-cli@latest plugin add claude-code (or codex); each turn becomes a trace with LLM calls,
+    tool executions and subagents, grouped one session per conversation.'
+  - Render templates can now be generated in the editor from a natural-language description, including
+    the span filter for trace templates.
+  - Signals and alerts can be paused/resumed with an Active switch without losing configuration.
+  - 'Evaluations UI refresh: groups sidebar, combined progression chart with per-dimension lines,
+    aggregation picker (Average/Sum/Min/Max/Median/p90/p95/p99), split-view run detail, old -> new
+    deltas in side-by-side comparison.'
+  - Trace render templates can render a whole trace (SQL WHERE filter selects the spans), not just a
+    single span's input or output.
+  - Evaluations run with LMNR_DEBUG=true join the current debug session automatically; sessions are
+    one timeline of runs, evals and notes.
+- date: '2026-06'
+  breaking: false
+  highlights:
+  - 'Laminar Agent: ask about project data in plain language across three surfaces — the MCP server
+    (ask_agent tool), the CLI (lmnr-cli ask), and Slack (@Laminar in a connected channel).'
+  - Signals gain a Settings tab (General, Alerts, Backfill, Activity), historical backfill runs, and a
+    rebuilt two-panel clusters view.
+  - AI SDK v7 support via registerTelemetry(new LaminarAiSdkTelemetry()), with a migration guide from
+    the v5/v6 experimental_telemetry style.
+  - 'Debugger session continuation: the first LMNR_DEBUG=true run writes .lmnr/debug-session.json and
+    later runs in the same directory rejoin it; lmnr-cli debug session new mints a clean session.'
+  - 'One-command CLI onboarding: lmnr-cli setup logs in, picks/creates a project, writes
+    LMNR_PROJECT_API_KEY, links the directory, and installs the Laminar agent skill. lmnr-cli login
+    adds OAuth device-flow auth.'
+- date: '2026-05'
+  breaking: false
+  additions:
+  - OTLP/HTTP+JSON ingest on /v1/traces alongside gRPC and HTTP+protobuf, for browser SDKs and other
+    runtimes without a protobuf encoder.
+  highlights:
+  - Saved table views per project and per resource (traces, spans, sessions, evaluations, datasets,
+    queues, debugger sessions, playgrounds, signal events).
+  - Render templates — a CUSTOM mode on every input/output viewer that renders values through a JSX
+    template.
+  - 'client.traces.pushMetadata / push_metadata attaches metadata to a trace that has already ended.'
+  - PII redaction as a project-level toggle (Settings -> Security), on Pro and Enterprise and
+    self-hostable as a gRPC service.
+- date: '2026-04'
+  breaking: true
+  breaking_changes:
+  - Online evaluators were removed.
+  highlights:
+  - Evaluations docs restructured end to end (new Concepts, Compare runs, Datasets, Self-hosted pages).
+  - New Viewing traces page documenting transcript view.
+  - 'Alerts and reports overhaul: multi-severity filtering (Info/Warning/Critical), skip-similar-events,
+    a new-cluster trigger type, and weekday/weekly signal summary reports.'
+  - Auto-instrumentation added for the OpenAI Agents SDK and Pydantic AI in Python; native Mastra
+    support via MastraExporter.
+- date: '2026-02'
+  breaking: false
+  highlights:
+  - 'Signals (LLM outcomes): define outcomes and behaviors, then backfill or run triggers on new
+    traces; signal events link back to trace context.'
+  - Labeling queues — push spans or dataset rows into queues, label in the UI, write results back to
+    datasets via UI or API.
+  - MCP server for trace-aware assistants (Claude Code, Cursor, Codex).
+  - New integrations — OpenRouter via the OpenAI SDK, and Pydantic AI via OpenTelemetry.
+- date: '2026-01'
+  breaking: false
+  highlights:
+  - SQL Editor — read-only ClickHouse SQL across traces, signals, logs, datasets and evals, with
+    export of results to datasets or labeling queues.
+- date: '2025-12-17'
+  breaking: false
+  highlights:
+  - Platform refresh — backend and frontend upgrades for compatibility, performance and reliability.
+  - Unified ingest for search and events; events become searchable.
+  - Self-hosted query engine reaches parity with production behavior.
+  - Always-on trace aggregation with new ClickHouse tables and a backfill path.

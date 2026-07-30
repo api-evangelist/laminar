@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: searched
+source: https://registry.npmjs.org/ + https://pypi.org/ + https://laminar.sh/docs
+packages:
+- language: typescript
+  registry: npm
+  name: '@lmnr-ai/lmnr'
+  version: 0.8.38
+  url: https://www.npmjs.com/package/@lmnr-ai/lmnr
+  install: npm install @lmnr-ai/lmnr
+  repository: https://github.com/lmnr-ai/lmnr-ts
+  license: Apache-2.0
+  description: TypeScript SDK for Laminar AI — tracing, observe(), LaminarClient, evaluations.
+  official: true
+- language: python
+  registry: pypi
+  name: lmnr
+  version: 0.7.56
+  url: https://pypi.org/project/lmnr/
+  install: pip install lmnr
+  license: Apache-2.0
+  description: Python SDK for Laminar — Laminar.initialize(), @observe, LaminarClient, evaluations.
+  official: true
+- language: javascript
+  registry: npm
+  name: lmnr-cli
+  version: 0.3.2
+  url: https://www.npmjs.com/package/lmnr-cli
+  install: npm install -g lmnr-cli
+  repository: https://github.com/lmnr-ai/lmnr-ts
+  license: Apache-2.0
+  description: CLI for the Laminar agent observability platform. Ships independently of the SDK;
+    see cli/laminar-cli.yml for the command surface.
+  kind: cli
+  official: true
+notes: 'Registries probed with no first-party Laminar client library found: Maven Central, NuGet,
+  pkg.go.dev, RubyGems, Packagist, crates.io. Laminar is OpenTelemetry-native, so any language with an
+  OTel SDK can send spans to the /v1/traces ingest endpoint without a Laminar-published package.'

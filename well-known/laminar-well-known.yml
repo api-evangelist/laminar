@@ -1,0 +1,45 @@
+generated: '2026-07-19'
+method: searched
+source: live probes of /.well-known/* on every Laminar host in apis.yml
+summary: No .well-known discovery documents are published on any Laminar host. All fifteen probes
+  returned 404. This is recorded as a real, verified absence — no security.txt, no OIDC/OAuth
+  discovery, no api-catalog, no ai-plugin.json.
+hosts:
+- host: https://api.lmnr.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://laminar.sh
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.lmnr.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+note: 'Laminar documents an OAuth 2.0 device authorization flow for lmnr-cli login, but publishes no
+  RFC 8414 authorization-server metadata document at a .well-known path.'

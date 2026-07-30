@@ -1,0 +1,161 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/docs/platform/cli
+docs: https://laminar.sh/docs/platform/cli
+name: lmnr-cli
+description: 'Command-line tool for onboarding a project, querying Laminar data, managing datasets,
+  and annotating debug sessions from the terminal. Ships as a standalone npm package independent of
+  the @lmnr-ai/lmnr SDK — the SDK is not required to onboard, query, or manage datasets.'
+package:
+  registry: npm
+  name: lmnr-cli
+  version: 0.3.2
+  artifact: packages/laminar-packages.yml
+install:
+- method: npx
+  command: npx lmnr-cli@latest <command>
+  note: run directly, no install
+- method: npm global
+  command: npm install -g lmnr-cli
+authentication:
+  model: authenticates as the signed-in user, never with a project API key
+  flow: OAuth device flow via lmnr-cli login
+  credential_store: ~/.config/lmnr/credentials.json
+  artifact: authentication/laminar-authentication.yml
+project_resolution:
+  order:
+  - --project-id <id>
+  - nearest .lmnr/project.json walking up from the current directory
+commands:
+- group: setup
+  commands:
+  - name: setup
+    description: 'One-command onboarding: logs you in, lets you pick or create a project, mints a
+      project API key and writes LMNR_PROJECT_API_KEY to .env.local or .env, links the directory via
+      .lmnr/project.json, and installs the Laminar agent skill into .claude/, .cursor/, .codex/ or
+      .agents/.'
+    flags:
+    - --json
+    - --project-id <uuid>
+    - --no-write-env
+    - --no-browser
+    exit_codes:
+      6: login failed
+      7: no project to select
+      8: .env write failed
+      9: key minting failed
+      10: project discovery failed
+- group: auth
+  commands:
+  - name: login
+    description: Start the OAuth device flow; prints a verification URL and code and opens the browser.
+    flags:
+    - --frontend-url
+  - name: logout
+    description: Remove the stored credentials.
+- group: project
+  commands:
+  - name: project list
+    description: List the projects you can access; the directory-linked project is marked with a dot.
+    flags:
+    - --json
+- group: sql
+  commands:
+  - name: sql query
+    description: Run SELECT-only ClickHouse SQL against the linked project's spans, traces, signal
+      events and more.
+    example: lmnr-cli sql query "SELECT name, duration FROM spans WHERE start_time > now() - INTERVAL
+      1 HOUR LIMIT 20"
+    flags:
+    - --json
+    - --base-url
+    - --port
+  - name: sql schema
+    description: List the available tables and columns.
+- group: agent
+  commands:
+  - name: ask
+    description: Ask Laminar Agent a question in plain language; it runs read-only SQL and reads trace
+      context, then answers grounded in the project's data.
+    flags:
+    - --json
+    - --conversation <id>
+    - --project-id <uuid>
+    note: 'with --json the output is { answer, conversationId, tools } so a script can thread a
+      multi-turn exchange'
+- group: dataset
+  commands:
+  - name: dataset list
+    description: List all datasets in the project.
+  - name: dataset push
+    description: Push new datapoints into an existing dataset.
+    example: lmnr-cli dataset push data.jsonl -n my-dataset
+  - name: dataset pull
+    description: Pull a dataset down to a local file.
+    example: lmnr-cli dataset pull output.jsonl -n my-dataset
+  - name: dataset create
+    description: Create a new dataset from a file, writing a local copy with dataset IDs.
+    example: lmnr-cli dataset create my-dataset data.jsonl -o my-dataset.jsonl
+  formats:
+  - .jsonl
+  - .json
+  - .csv
+- group: debug
+  description: Operational layer for the Debugger; commands default to the session in
+    .lmnr/debug-session.json (the most recent LMNR_DEBUG=true run in the directory).
+  commands:
+  - name: debug session new
+    description: Mint a fresh debug session and reset .lmnr/debug-session.json to it.
+    flags:
+    - --json
+    - --no-browser
+  - name: debug session open
+    description: Open the debug session's debugger page in the browser. Local-only — no login or
+      network call.
+    flags:
+    - --session-id
+    - --json
+  - name: debug session set-name
+    description: Set the display name of the current (or a specified) debug session.
+  - name: debug session add-note
+    description: Attach a markdown note to the debug session, slotted into the session timeline.
+  - name: debug session summary
+    description: Print the session's full timeline oldest first — every run, evaluation and note.
+    flags:
+    - --session-id
+    - --json
+- group: plugins
+  commands:
+  - name: plugin add claude-code
+    description: Install the Claude Code tracing plugin (logs in, picks a project, mints a key).
+    since: '2026-07'
+  - name: plugin add codex
+    description: Install the OpenAI Codex CLI tracing plugin.
+    since: '2026-07'
+key_flows:
+- name: Onboard a project in one command
+  steps:
+  - npx lmnr-cli@latest setup
+  - add the SDK to the app and run it
+  - lmnr-cli sql query "SELECT * FROM traces ORDER BY start_time DESC LIMIT 1"
+- name: Agent-driven investigation
+  steps:
+  - lmnr-cli ask "What failed in the most recent run for my dev-claude session?"
+  - lmnr-cli ask "and which model did it use?" --conversation <id>
+- name: Debug session loop
+  steps:
+  - run the agent with LMNR_DEBUG=true
+  - lmnr-cli debug session set-name "..."
+  - lmnr-cli debug session add-note "..."
+  - lmnr-cli debug session summary
+self_hosting:
+  env:
+  - LMNR_FRONTEND_URL
+  - LMNR_BASE_URL
+  - LMNR_HTTP_PORT
+  note: login talks to the frontend (auth issuer); sql, dataset, project and debug talk to the API
+agent_friendly:
+  json_flag: every command that supports it takes --json, printing machine-readable output to stdout
+    while human progress messages go to stderr
+  designed_for: coding agents that can shell out; setup --json emits a single machine-readable line
+    with distinct exit codes to branch on

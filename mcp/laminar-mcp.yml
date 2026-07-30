@@ -1,0 +1,37 @@
+generated: '2026-07-19'
+method: searched
+status: published
+source: https://laminar.sh/docs/platform/mcp
+server:
+  name: laminar
+  transport: http
+  url: https://api.lmnr.ai/v1/mcp
+  self_hosted_url_pattern: https://<your-laminar-host>/v1/mcp
+  local_url: http://localhost:8000/v1/mcp
+authentication:
+  scheme: bearer
+  header: Authorization
+  credential: project API key (dashboard -> Settings -> Project API Keys)
+  example_header: 'Authorization: Bearer <YOUR_PROJECT_API_KEY>'
+tools:
+- name: ask_agent
+  description: Ask Laminar Agent a question in plain language and get a grounded answer back. The
+    agent runs read-only SQL and reads trace context so the caller does not have to write queries.
+    Takes a prompt; the response returns a conversationId that can be passed back to continue.
+- name: query_laminar_sql
+  description: Run read-only ClickHouse SQL across Laminar data and get JSON back. Used to find trace
+    IDs, filter by time/session/status, or pull raw span fields (input, output, attributes).
+- name: get_trace_context
+  description: Get an LLM-optimized summary of a single trace — span tree, timings, LLM
+    inputs/outputs, and errors — to understand what happened in a specific run given a trace ID.
+constraints:
+- SQL tool is read-only (SELECT only) and automatically scoped to the caller's project.
+- get_trace_context truncates long inputs/outputs; use the SQL tool to fetch full fields.
+clients_documented:
+- name: Claude Code
+  install: 'claude mcp add --transport http laminar https://api.lmnr.ai/v1/mcp --header
+    "Authorization: Bearer <YOUR_PROJECT_API_KEY>"'
+- name: Cursor
+  config_style: mcpServers entry with type http and Authorization header
+- name: Codex
+  config_style: '[mcp_servers.laminar] with url + bearer_token_env_var = LMNR_PROJECT_API_KEY'

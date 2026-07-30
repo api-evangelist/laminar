@@ -1,0 +1,57 @@
+generated: '2026-07-19'
+method: searched
+source: https://laminar.sh/pricing
+url: https://laminar.sh/pricing
+currency: USD
+billing_period: month
+model: 'seat-free subscription with included data volume and included Signals spend, plus usage-based
+  overage on both'
+plans:
+- name: Free
+  price: 0
+  data_included_gb: 1
+  signals_included: $5
+  retention: 7 days
+  projects: 1
+  seats: 1
+  support: Community
+- name: Starter
+  price: 30
+  data_included_gb: 3
+  data_overage: $2/GB
+  signals_included: $15
+  signals_overage: $0.5 / $3 per 1M tokens
+  retention: 30 days
+  projects: unlimited
+  seats: unlimited
+  support: Email
+- name: Pro
+  price: 150
+  data_included_gb: 10
+  data_overage: $1.50/GB
+  signals_included: $50
+  signals_overage: $0.4 / $2.5 per 1M tokens
+  retention: 6 months
+  projects: unlimited
+  seats: unlimited
+  support: Slack
+  additional:
+  - PII redaction
+- name: Enterprise
+  price: custom
+  data_included_gb: custom
+  signals_included: custom
+  retention: custom
+  projects: unlimited
+  seats: unlimited
+  support: Dedicated
+  additional:
+  - on-premise / self-hosted deployment
+  - enterprise license unlocks Signals, signal event clusters, and email + Slack alerts on self-hosted
+  - option to have the Laminar team run the deployment (managed self-hosting)
+self_hosting:
+  free_tier: 'The open-source platform (Apache-2.0) is fully self-hostable via Docker Compose or
+    Kubernetes/Helm at no license cost; tracing, search, dashboards, evaluations, the debugger and AI
+    features are identical across all deployment options. Signals, clusters and Slack/email alerting
+    require an enterprise license key.'
+  docs: https://laminar.sh/docs/self-hosting/overview
