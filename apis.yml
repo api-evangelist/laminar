@@ -1,28 +1,175 @@
 aid: laminar
 name: Laminar
-description: 'Laminar is a company surfaced as a portfolio company of insight-partners, techstars and
-  added to the API Evangelist network as a stub for enrichment. Sector: cybersecurity. This profile is
-  a lead awaiting the enrichment pipeline.'
+description: 'Laminar is an open-source, OpenTelemetry-native observability and debugging platform
+  built for AI agents and LLM applications. It traces every LLM call, tool call, and sub-agent a run
+  produces, renders each trace as a readable transcript rather than a raw span tree, and turns that
+  data into answers: a record-and-replay Debugger that serves everything before your change from cache
+  so each iteration takes seconds, and Signals that let you describe outcomes and failures in plain
+  language and extract structured events across all traces for clustering and alerting. The platform
+  adds evaluations, datasets and labeling queues, a playground, full-text search, custom dashboards,
+  and read-only ClickHouse SQL over trace data from the UI, the lmnr-cli, or a hosted MCP server.
+  Laminar ships TypeScript and Python SDKs with auto-instrumentation for the Vercel AI SDK, Claude
+  Agent SDK, OpenAI Agents SDK, LangChain/LangGraph, Pydantic AI, Browser Use, Playwright and more,
+  and can run as managed Laminar Cloud or fully self-hosted via Docker Compose or Kubernetes/Helm.'
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://laminar.sh/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/laminar/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - insight-partners
 - techstars
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-backed-by-note: 'Inherited from the originating VC-portfolio stub and NOT verified against this
+  company during enrichment. Laminar (lmnr / laminar.sh) is the open-source AI-agent observability
+  company; the name collides with other companies called Laminar. Treat x-backed-by as unverified.'
+x-tier: enriched
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
-- Company
-- Cybersecurity
-apis: []
+- Observability
+- LLM
+- AI Agents
+- Tracing
+- OpenTelemetry
+- Evaluations
+- Monitoring
+- Developer Tools
+- Open Source
+apis:
+- aid: laminar:laminar-sql-query-api
+  name: Laminar SQL Query API
+  humanURL: https://laminar.sh/docs/platform/sql-editor
+  baseURL: https://api.lmnr.ai
+  tags:
+  - SQL
+  - Traces
+  - Spans
+  - Analytics
+  description: 'Run SELECT-only ClickHouse SQL over a project''s observability data via POST
+    /v1/sql/query. Authenticates with a project API key as a bearer token, accepts a query plus typed
+    {name:Type} parameters, and returns rows as a JSON data array. Queryable tables are spans, traces,
+    events, tags, dataset_datapoints, dataset_datapoint_versions and evaluation_datapoints; queries
+    are automatically scoped to the calling project so no tenant filter is required.'
+  properties:
+  - url: https://laminar.sh/docs/platform/sql-editor
+    type: Documentation
+  - url: https://github.com/lmnr-ai/lmnr-skills/blob/main/skills/laminar/references/sql-query-api.md
+    type: APIReference
+- aid: laminar:laminar-otlp-trace-ingest-api
+  name: Laminar OpenTelemetry Trace Ingest API
+  humanURL: https://laminar.sh/docs/tracing/otel
+  baseURL: https://api.lmnr.ai
+  tags:
+  - OpenTelemetry
+  - OTLP
+  - Tracing
+  - Ingest
+  description: 'The standard OpenTelemetry trace ingest endpoint at /v1/traces. Laminar accepts OTLP
+    over gRPC, HTTP+protobuf, and (since May 2026) HTTP+JSON, so any OpenTelemetry-capable runtime —
+    including browser SDKs without a protobuf encoder — can send spans without the Laminar SDK.
+    Authenticated with a project API key; gRPC ingest is served on port 8443 for Laminar Cloud.'
+  properties:
+  - url: https://laminar.sh/docs/tracing/otel
+    type: Documentation
+  - url: https://laminar.sh/docs/tracing/introduction
+    type: Tracing
+- aid: laminar:laminar-evaluations-api
+  name: Laminar Evaluations API
+  humanURL: https://laminar.sh/docs/evaluations/manual-evaluation
+  baseURL: https://api.lmnr.ai
+  tags:
+  - Evaluations
+  - Datasets
+  - Scoring
+  description: 'The lower-level LaminarClient.evals surface for wiring evaluations into an existing
+    pipeline: create an evaluation, pre-register each datapoint so a row is visible in the UI before
+    the executor runs, then update that datapoint with a trace id, executor output, and scores.
+    Because update can be called any time after create, the executor and the scorer can run in
+    different processes, which supports async LLM-judge scoring and pure backfills of scored rows.'
+  properties:
+  - url: https://laminar.sh/docs/evaluations/manual-evaluation
+    type: Documentation
+  - url: https://laminar.sh/docs/sdk/client
+    type: APIReference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/laminar-domain-security.yml
 - type: Website
-  url: https://lmnr.io/
+  url: https://laminar.sh/
+- type: DeveloperPortal
+  url: https://laminar.sh/docs
+- type: Documentation
+  url: https://laminar.sh/docs
+- type: APIReference
+  url: https://laminar.sh/docs/sdk/client
+- type: GettingStarted
+  url: https://laminar.sh/docs/getting-started
+- type: Support
+  url: https://discord.gg/nNFUUDAKub
+- type: Blog
+  url: https://laminar.sh/blog
+- type: GitHubOrganization
+  url: https://github.com/lmnr-ai
+- type: SourceCode
+  url: https://github.com/lmnr-ai/lmnr
+- type: Pricing
+  url: https://laminar.sh/pricing
+- type: SignUp
+  url: https://laminar.sh/sign-in
+- type: TermsOfService
+  url: https://laminar.sh/policies/terms
+- type: PrivacyPolicy
+  url: https://laminar.sh/policies/privacy
+- type: StatusPage
+  url: https://status.laminar.sh
+- type: SelfHosted
+  url: https://laminar.sh/docs/self-hosting/overview
+- type: Packages
+  url: packages/laminar-packages.yml
+- type: SDKs
+  url: packages/laminar-packages.yml
+- type: CLI
+  url: cli/laminar-cli.yml
+- type: MCPServer
+  url: mcp/laminar-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/laminar-llms.txt
+- type: Authentication
+  url: authentication/laminar-authentication.yml
+- type: Conventions
+  url: conventions/laminar-conventions.yml
+- type: ChangeLog
+  url: changelog/laminar-changelog.yml
+- type: Lifecycle
+  url: lifecycle/laminar-lifecycle.yml
+- type: Conformance
+  url: conformance/laminar-conformance.yml
+- type: WellKnown
+  url: well-known/laminar-well-known.yml
+- type: Plans
+  url: plans/laminar-plans.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
