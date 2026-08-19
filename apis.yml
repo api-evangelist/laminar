@@ -35,7 +35,7 @@ x-backed-by-note: 'Inherited from the originating VC-portfolio stub and NOT veri
   company during enrichment. Laminar (lmnr / laminar.sh) is the open-source AI-agent observability
   company; the name collides with other companies called Laminar. Treat x-backed-by as unverified.'
 x-tier: enriched
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-19'
 tags:
