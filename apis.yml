@@ -11,6 +11,19 @@ description: 'Laminar is an open-source, OpenTelemetry-native observability and 
   Laminar ships TypeScript and Python SDKs with auto-instrumentation for the Vercel AI SDK, Claude
   Agent SDK, OpenAI Agents SDK, LangChain/LangGraph, Pydantic AI, Browser Use, Playwright and more,
   and can run as managed Laminar Cloud or fully self-hosted via Docker Compose or Kubernetes/Helm.'
+deliveryModel:
+  model: open-core
+  license: Apache-2.0
+  open_source: true
+  commercial: true
+  callable_host: false
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
