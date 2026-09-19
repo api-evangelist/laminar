@@ -57,7 +57,7 @@ tags:
 - AI Agents
 - Tracing
 - OpenTelemetry
-- Evaluations
+- Evaluation
 - Monitoring
 - Developer Tools
 - Open-Source
@@ -114,6 +114,10 @@ apis:
   humanURL: https://laminar.sh/docs/evaluations/manual-evaluation
   baseURL: https://api.lmnr.ai
   tags:
+  - Evaluation
+  - Datasets
+  - Scoring
+  tags_raw:
   - Evaluations
   - Datasets
   - Scoring
