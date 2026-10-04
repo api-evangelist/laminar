@@ -60,7 +60,7 @@ tags:
 - Evaluation
 - Monitoring
 - Developer Tools
-- Open-Source
+- Open Source
 tags_raw:
 - Observability
 - LLM
@@ -71,6 +71,7 @@ tags_raw:
 - Monitoring
 - Developer Tools
 - Open Source
+- Open-Source
 apis:
 - aid: laminar:laminar-sql-query-api
   name: Laminar SQL Query API
