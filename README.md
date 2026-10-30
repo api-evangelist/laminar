@@ -64,46 +64,111 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Laminar is an open-source, OpenTelemetry-native observability and debugging platform built for AI
-agents and LLM applications. It traces every LLM call, tool call, and sub-agent a run produces,
-renders each trace as a readable transcript rather than a raw span tree, and turns that data into
-answers: a record-and-replay Debugger that serves everything before your change from cache, and
-Signals that let you describe outcomes and failures in plain language and extract structured events
-across all traces. The platform adds evaluations, datasets and labeling queues, a playground, full-text
-search, custom dashboards, and read-only ClickHouse SQL over trace data from the UI, the `lmnr-cli`,
-or a hosted MCP server. Runs as managed Laminar Cloud or fully self-hosted (Docker Compose or
-Kubernetes/Helm).
+Laminar is an open-source, OpenTelemetry-native observability and debugging platform built for AI agents and LLM applications. It traces every LLM call, tool call, and sub-agent a run produces, renders each trace as a readable transcript rather than a raw span tree, and turns that data into answers: a record-and-replay Debugger that serves everything before your change from cache so each iteration takes seconds, and Signals that let you describe outcomes and failures in plain language and extract structured events across all traces for clustering and alerting. The platform adds evaluations, datasets and labeling queues, a playground, full-text search, custom dashboards, and read-only ClickHouse SQL over trace data from the UI, the lmnr-cli, or a hosted MCP server. Laminar ships TypeScript and Python SDKs with auto-instrumentation for the Vercel AI SDK, Claude Agent SDK, OpenAI Agents SDK, LangChain/LangGraph, Pydantic AI, Browser Use, Playwright and more, and can run as managed Laminar Cloud or fully self-hosted via Docker Compose or Kubernetes/Helm.
 
-- Website: https://laminar.sh/
-- Docs: https://laminar.sh/docs
-- Source: https://github.com/lmnr-ai/lmnr (Apache-2.0)
-- Status: https://status.laminar.sh
-- API base: `https://api.lmnr.ai` (`/v1/sql/query`, `/v1/traces`, `/v1/mcp`)
+**Areas:** Observability · LLM · AI Agents · Tracing · OpenTelemetry · Evaluation · Monitoring · Developer Tools · Open Source
 
-## Artifacts
+## Laminar on APIs.io
 
-| Artifact | Path | Method |
-|---|---|---|
-| Packages / SDKs | `packages/laminar-packages.yml` | searched |
-| MCP server | `mcp/laminar-mcp.yml` | searched (published) |
-| Agent Skill | `skills/laminar-laminar.md` + `skills/_index.yml` | searched (provider-published, verbatim) |
-| llms.txt | `llms/laminar-llms.txt` | searched (verbatim) |
-| Authentication | `authentication/laminar-authentication.yml` | searched |
-| Conventions | `conventions/laminar-conventions.yml` | searched |
-| Changelog | `changelog/laminar-changelog.yml` | searched |
-| CLI | `cli/laminar-cli.yml` | searched |
-| Lifecycle | `lifecycle/laminar-lifecycle.yml` | searched |
-| Conformance | `conformance/laminar-conformance.yml` | searched |
-| Plans | `plans/laminar-plans.yml` | searched |
-| Well-Known | `well-known/laminar-well-known.yml` | searched (all 404 — verified absence) |
-| Domain security | `security/laminar-domain-security.yml` | probed |
+Everything profiled for Laminar is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/laminar/](https://apis.io/providers/laminar/)** — or go straight to one of the APIs or properties below.
 
-Laminar publishes **no OpenAPI**, so no `openapi/`, `overlays/`, `errors/`, `data-model/`,
-`agentic-access/` or `arazzo/` artifacts were derived. No AsyncAPI or consumer webhook surface, no
-`.well-known` documents, no vulnerability-disclosure program and no trust center / named
-certifications were found — each recorded as a verified absence rather than fabricated.
+### APIs (3)
 
-> **Provenance caveat.** This repo originated as a VC-portfolio stub tagged "cybersecurity" and backed
-> by insight-partners / techstars. That backing was **not** verified against this company during
-> enrichment — the name "Laminar" collides across several companies. See `x-backed-by-note` in
-> `apis.yml`.
+- [Laminar SQL Query API](https://apis.io/apis/laminar/laminar-sql-query-api/) — Run SELECT-only ClickHouse SQL over a project's observability data via POST /v1/sql/query. Authenticates with a project API key as a bearer token, accepts a…
+- [Laminar OpenTelemetry Trace Ingest API](https://apis.io/apis/laminar/laminar-otlp-trace-ingest-api/) — The standard OpenTelemetry trace ingest endpoint at /v1/traces. Laminar accepts OTLP over gRPC, HTTP+protobuf, and (since May 2026) HTTP+JSON, so any…
+- [Laminar Evaluations API](https://apis.io/apis/laminar/laminar-evaluations-api/) — The lower-level LaminarClient.evals surface for wiring evaluations into an existing pipeline: create an evaluation, pre-register each datapoint so a row is…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [laminar](https://apis.io/servers/laminar/laminar/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Laminar Authentication](https://apis.io/security/laminar/laminar-authentication/)
+- [Laminar Domain Security](https://apis.io/security/laminar/laminar-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Laminar Plans](https://apis.io/plans/laminar/laminar-plans/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://laminar.sh/)
+- [Documentation](https://laminar.sh/docs)
+- [Getting started](https://laminar.sh/docs/getting-started)
+- [API reference](https://laminar.sh/docs/sdk/client)
+- [Pricing](https://laminar.sh/pricing)
+- [Sign up](https://laminar.sh/sign-in)
+- [Support](https://discord.gg/nNFUUDAKub)
+- [Blog](https://laminar.sh/blog)
+- [Terms of service](https://laminar.sh/policies/terms)
+- [Privacy policy](https://laminar.sh/policies/privacy)
+- [GitHub](https://github.com/lmnr-ai)
+- [Status](https://status.laminar.sh)
+
+## API Evangelist rating
+
+**Kin Score 46.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 78.6 |
+| Access clarity | 76.3 |
+
+**Agent readiness 14.7** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 22.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/laminar/](https://apis.io/providers/laminar/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Laminar: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/laminar/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
